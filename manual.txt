@@ -1,0 +1,449 @@
+Go to the first, previous, next, last section, table of contents.
+Commands
+
+A command in screen can either be bound to a key, invoked from a screenrc file, or called from the colon prompt (see section Customizing Screen). As of version 3.3, all commands can be bound to keys, although some may be less useful than others. For a number of real life working examples of the most important commands see the files `etc/screenrc' and `etc/etcscreenrc' of your screen distribution.
+
+In this manual, a command definition looks like this:
+
+-- Command: command [-n] ARG1 [ARG2] ...
+(keybindings)
+This command does something, but I can't remember what.
+An argument in square brackets (`[]') is optional. Many commands take an argument of `on' or `off', which is indicated as state in the definition.
+
+Default Key Bindings: screen keyboard commands.
+Command Summary: List of all commands.
+Default Key Bindings
+
+As mentioned previously, each keyboard command consists of a C-a followed by one other character. For your convenience, all commands that are bound to lower-case letters are also bound to their control character counterparts (with the exception of C-a a; see below). Thus, both C-a c and C-a C-c can be used to create a window.
+
+The following table shows the default key bindings:
+
+C-a '
+C-a "
+(select)
+Prompt for a window identifier and switch. See section Selecting a Window.
+C-a 0...9
+(select 0...select 9)
+Switch to window number 0...9. See section Selecting a Window.
+C-a C-a
+(other)
+Toggle to the window displayed previously. See section Selecting a Window.
+C-a a
+(meta)
+Send the command character (C-a) to window. See escape command. See section Command Character.
+C-a A
+(title)
+Allow the user to enter a title for the current window. See section Naming Windows (Titles).
+C-a b
+itemx C-a C-b (break)
+Send a break to the tty. See section Break.
+C-a B
+(pow_break)
+Close and reopen the tty-line. See section Break.
+C-a c
+C-a C-c
+(screen)
+Create a new window with a shell and switch to that window. See section Screen Command.
+C-a C
+(clear)
+Clear the screen. See section Clear.
+C-a d
+C-a C-d
+(detach)
+Detach screen from this terminal. See section Detach.
+C-a D D
+(pow_detach)
+Detach and logout. See section Power Detach.
+C-a f
+C-a C-f
+(flow)
+Cycle flow among `on', `off' or `auto'. See section Flow.
+C-a C-g
+(vbell)
+Toggle visual bell mode. See section Bell.
+C-a h
+(hardcopy)
+Write a hardcopy of the current window to the file "hardcopy.n". See section hardcopy.
+C-a H
+(log)
+Toggle logging of the current window to the file "screenlog.n". See section log.
+C-a i
+C-a C-i
+(info)
+Show info about the current window. See section Info.
+C-a k
+C-a C-k
+(kill)
+Destroy the current window. See section Kill.
+C-a l
+C-a C-l
+(redisplay)
+Fully refresh the current window. See section Redisplay.
+C-a L
+(login)
+Toggle the current window's login state. See section Login.
+C-a m
+C-a C-m
+(lastmsg)
+Repeat the last message displayed in the message line. See section Display Last Message.
+C-a M
+(monitor) Toggle monitoring of the current window. See section Monitoring.
+C-a SPC
+C-a n
+C-a C-n
+(next)
+Switch to the next window. See section Selecting a Window.
+C-a N
+(number)
+Show the number (and title) of the current window. See section Number.
+C-a p
+C-a C-p
+C-a C-h
+C-a BackSpace
+(prev)
+Switch to the previous window (opposite of C-a n). See section Selecting a Window.
+C-a q
+C-a C-q
+(xon)
+Send a ^Q (ASCII XON) to the current window. See section XON and XOFF.
+C-a r
+C-a C-r
+(wrap)
+Toggle the current window's line-wrap setting (turn the current window's automatic margins on or off). See section Wrap.
+C-a s
+C-a C-s
+(xoff)
+Send a ^S (ASCII XOFF) to the current window. See section XON and XOFF.
+C-a t
+C-a C-t
+(time)
+Show the load average and xref. See section Time.
+C-a v
+(version)
+Display the version and compilation date. See section Version.
+C-a C-v
+(digraph)
+Enter digraph. See section Digraph.
+C-a w
+C-a C-w
+(windows)
+Show a list of active windows. See section Windows.
+C-a W
+(width)
+Toggle between 80 and 132 columns. See section Window Size.
+C-a x
+C-a C-x
+(lockscreen)
+Lock your terminal. See section Lock.
+C-a z
+C-a C-z
+(suspend)
+Suspend screen. See section Suspend.
+C-a Z
+(reset)
+Reset the virtual terminal to its "power-on" values. See section Reset.
+C-a .
+(dumptermcap)
+Write out a `.termcap' file. See section Write out the window's termcap entry.
+C-a ?
+(help)
+Show key bindings. See section Help.
+C-a C-\
+(quit)
+Kill all windows and terminate screen. See section Quit.
+C-a :
+(colon)
+Enter a command line. See section Colon.
+C-a [
+C-a C-[
+C-a ESC
+(copy)
+Enter copy/scrollback mode. See section Copying.
+C-a ]
+C-a C-]
+(paste .)
+Write the contents of the paste buffer to the stdin queue of the current window. See section Paste.
+C-a {
+(history)
+Copy and paste a previous (command) line. See section History.
+C-a >
+(writebuf)
+Write the paste buffer out to the screen-exchange file. See section Screen-Exchange.
+C-a <
+(readbuf)
+Read the screen-exchange file into the paste buffer. See section Screen-Exchange.
+C-a =
+(removebuf)
+Delete the screen-exchange file. See section Screen-Exchange.
+C-a _
+(silence)
+Start/stop monitoring the current window for inactivity. See section Silence,
+C-a ,
+(license)
+Show the copyright page.
+Command Summary
+
+
+acladd usernames
+Allow other users in this session. See section Multiuser Session.
+aclchg usernames permbits list
+Change a user's permissions. See section Multiuser Session.
+acldel username
+Disallow other user in this session. See section Multiuser Session.
+activity message
+Set the activity notification message. See section Monitoring.
+allpartial state
+Set all windows to partial refresh. See section Redisplay.
+at [ident][#|*|%] command [args]
+Execute a command at other displays or windows. See section At.
+autodetach state
+Automatically detach the session on SIGHUP. See section Detach.
+autonuke state
+Enable a clear screen to discard unwritten output. See section Autonuke.
+bell_msg message
+Set the bell notification message. See section Bell.
+bind key [command [args]]
+Bind a command to a key. See section The bind command.
+bindkey [opts] [string [cmd args]]
+Bind a string to a series of keystrokes. See section Bindkey.
+break [duration]
+Send a break signal to the current window. See section Break.
+bufferfile [exchange-file]
+Select a file for screen-exchange. See section Screen-Exchange.
+c1 [state]
+Change c1 code processing. See section Character Processing.
+charset set
+Change character set slot designation. See section Character Processing.
+chdir [directory]
+Change the current directory for future windows. See section Chdir.
+clear
+Clear the window screen. See section Clear.
+colon
+Enter a screen command. See section Colon.
+command
+Simulate the screen escape key. See section Command Character.
+console [state]
+Grab or ungrab console output. See section Console.
+copy
+Enter copy mode. See section Copying.
+copy_reg [key]
+Removed. Use paste instead. See section Registers.
+crlf state
+Select line break behavior for copying. See section CR/LF.
+debug state
+Suppress/allow debugging output. See section Debug.
+defautonuke state
+Select default autonuke behavior. See section Autonuke.
+defc1 state
+Select default c1 processing behavior. See section Character Processing.
+defcharset [set]
+Change defaul character set slot designation. See section Character Processing.
+defescape xy
+Set the default command and meta characters. See section Command Character.
+defflow fstate
+Select default flow control behavior. See section Flow.
+defgr state
+Select default GR processing behavior. See section Character Processing.
+defhstatus [status]
+Select default window hardstatus line. See section Hardstatus.
+defkanji wtype
+Select default GR processing behavior. See section Character Processing.
+deflogin state
+Select default utmp logging behavior. See section Login.
+defmode mode
+Select default file mode for ptys. See section Mode.
+defmonitor state
+Select default activity monitoring behavior. See section Monitoring.
+defobuflimit limit
+Select default output buffer limit. See section Obuflimit.
+defscrollback num
+Set default lines of scrollback. See section Scrollback.
+defwrap state
+Set default line-wrapping behavior. See section Wrap.
+defwritelock on|off|auto
+Set default writelock behavior. See section Multiuser.
+defzombie [keys]
+Keep dead windows. See section Zombie.
+detach
+Disconnect screen from the terminal. See section Detach.
+digraph
+Enter digraph sequence. See section Digraph.
+dumptermcap
+Write the window's termcap entry to a file. See section Write out the window's termcap entry.
+echo [-n] message
+Display a message on startup. See section Startup.
+escape xy
+Set the command and meta characters. See section Command Character.
+exec [[fdpat] command [args ...]]
+Run a subprocess (filter). See section Exec.
+flow [fstate]
+Set flow control behavior. See section Flow.
+gr [state]
+Change GR charset processing. See section Character Processing.
+hardcopy
+Write out the contents of the current window. See section hardcopy.
+hardcopy_append state
+Append to hardcopy files. See section hardcopy.
+hardcopydir directory
+Place, where to dump hardcopy files. See section hardcopy.
+hardstatus [state]
+Use the hardware status line. See section Hardware Status Line.
+height [lines]
+Set display height. See section Window Size.
+help
+Display current key bindings. See section Help.
+history
+Find previous command beginning .... See section History.
+info
+Display terminal settings. See section Info.
+ins_reg [key]
+Removed, use paste instead. See section Registers.
+kanji wtype [dtype]
+Set the kanji type of a window. See section Character Processing.
+kill
+Destroy the current window. See section Kill.
+lastmsg
+Redisplay the last message. See section Display Last Message.
+license
+Display licensing information. See section Startup.
+lockscreen
+Lock the controlling terminal. See section Lock.
+log [state]
+Log all output in the current window. See section log.
+logfile filename
+Place where to collect logfiles. See section log.
+login [state]
+Log the window in `/etc/utmp'. See section Login.
+mapdefault
+Use only the default mapping table for the next keystroke. See section Bindkey Control.
+mapnotnext
+Don't try to do keymapping on the next keystroke. See section Bindkey Control.
+maptimeout timo
+Set the intercharacter timeout used for keymapping. See section Bindkey Control.
+markkeys string
+Rebind keys in copy mode. See section markkeys.
+meta
+Insert the command character. See section Command Character.
+monitor [state]
+Monitor activity in window. See section Monitoring.
+msgminwait sec
+Set minimum message wait. See section Message Wait.
+msgwait sec
+Set default message wait. See section Message Wait.
+multiuser state
+Go into single or multi user mode. See section Multiuser Session.
+nethack state
+Use nethack-like error messages. See section Nethack.
+next
+Switch to the next window. See section Selecting a Window.
+number [n]
+Change/display the current window's number. See section Number.
+obuflimit [limit]
+Select output buffer limit. See section Obuflimit.
+other
+Switch to the window you were in last. See section Selecting a Window.
+partial state
+Set window to partial refresh. See section Redisplay.
+password [crypted_pw]
+Set reattach password. See section Detach.
+paste [src_regs [dest_reg]]
+Paste contents of paste buffer or registers somewhere. See section Paste.
+pastefont [state]
+Include font information in the paste buffer. See section Paste.
+pow_break
+Close and Reopen the window's terminal. See section Break.
+pow_detach
+Detach and hang up. See section Power Detach.
+pow_detach_msg [message]
+Set message displayed on pow_detach. See section Power Detach.
+prev
+Switch to the previous window. See section Selecting a Window.
+printcmd [cmd]
+Set a command for VT100 printer port emulation. See section Printcmd.
+process [key]
+Treat a register as input to screen. See section Registers.
+quit
+Kill all windows and exit. See section Quit.
+readbuf
+Read the paste buffer from the screen-exchange file. See section Screen-Exchange.
+readreg [reg [file]]
+Load a register from paste buffer or file. See section Registers.
+redisplay
+Redisplay the current window. See section Redisplay.
+register key string
+Store a string to a register. See section Registers.
+removebuf
+Delete the screen-exchange file. See section Screen-Exchange.
+reset
+Reset the terminal settings for the window. See section Reset.
+screen [opts] [n] [cmd [args]]
+Create a new window. See section Screen Command.
+scrollback num
+Set size of scrollback buffer. See section Scrollback.
+select [n]
+Switch to a specified window. See section Selecting a Window.
+sessionname [name]
+Name this session. See section Session Name.
+setenv [var [string]]
+Set an environment variable for new windows. See section Setenv.
+shell command
+Set the default program for new windows. See section Shell.
+shelltitle title
+Set the default name for new windows. See section Shell.
+silence [state|seconds]
+Monitor a window for inactivity. See section Silence.
+silencewait seconds
+Default timeout to trigger an inactivity notify. See section Silence.
+sleep num
+Pause during startup. See section Startup.
+slowpaste msec
+Slow down pasting in windows. See section Paste.
+sorendition [attr [color]]
+Change text highlighting. See section Sorendition.
+startup_message state
+Display copyright notice on startup. See section Startup.
+stuff string
+Stuff a string in the input buffer of a window. See section Paste.
+suspend
+Put session in background. See section Suspend.
+term term
+Set $TERM for new windows. See section Term.
+termcap term terminal-tweaks [window-tweaks]
+Tweak termcap entries for best performance. See section The termcap command.
+terminfo term terminal-tweaks [window-tweaks]
+Ditto, for terminfo systems. See section The termcap command.
+termcapinfo term terminal-tweaks [window-tweaks]
+Ditto, for both systems. See section The termcap command.
+time
+Display time and load average. See section Time.
+title [windowtitle]
+Set the name of the current window. See section Title Command.
+unsetenv var
+Unset environment variable for new windows. See section Setenv.
+vbell [state]
+Use visual bell. See section Bell.
+vbell_msg [message]
+Set vbell message. See section Bell.
+vbellwait sec
+Set delay for vbell message. See section Bell.
+version
+Display screen version. See section Version.
+wall message
+Write a message to all displays. See section Multiuser Session.
+width [num]
+Set the width of the window. See section Window Size.
+windows
+List active windows. See section Windows.
+wrap [state]
+Control line-wrap behavior. See section Wrap.
+writebuf
+Write paste buffer to screen-exchange file. See section Screen-Exchange.
+writelock on|off|auto
+Grant exclusive write permission. See section Multiuser Session.
+xoff
+Send an XOFF character. See section XON and XOFF.
+xon
+Send an XON character. See section XON and XOFF.
+zombie [keys]
+Keep dead windows. See section Zombie.
+Go to the first, previous, next, last section, table of contents.
